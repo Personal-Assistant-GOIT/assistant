@@ -149,7 +149,9 @@ def show_all(data):
     else:
         # если не задан параметр N  считаем N равным длине словаря
         N = len(phone_book.data)
-
+        # если в базе ничего нет - выводим смысловую фразу.
+    if not N:
+        return "base is empty"
     # вызывает метод итератор из AddressBook
     for el in phone_book.iterator(N):
         print(el)
@@ -157,6 +159,7 @@ def show_all(data):
 
     # выполнить требование, чтобы все принты были в main  не получаилось
     # поэтому в return  идет строка без смысла
+
     return 'it\'s all'
 
 
@@ -207,13 +210,13 @@ if __name__ == '__main__':
     phone_book = AddressBook()
     # открываю файл данных, если он есть.
 
-    if os.path.isfile(FILE)):
+    if os.path.isfile(FILE):
         with open(FILE, 'rb') as f:
-            phone_book=pickle.load(f)
+            phone_book = pickle.load(f)
     #  если его нет, то phone_book будет новым экземляром AddressBook
 
     while True:
-        text=''' You can:
+        text = ''' You can:
         hello, good bye, close, exit, . - understandably
         add ph <name> <phone>
         add bd <name> <birthday>
@@ -224,13 +227,13 @@ if __name__ == '__main__':
         find <str>    - seek all records where is finding <str>
         '''
         print(text)
-        data=input()
+        data = input()
 
-        func=choice_action(data)
+        func = choice_action(data)
         if isinstance(func, Exception):  # type
             print(func)
             continue
-        result=func(data)
+        result = func(data)
         if result:
             print(result)
         if result == 'Good bye!':

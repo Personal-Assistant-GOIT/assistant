@@ -200,7 +200,7 @@ class AddressBook(UserDict):
 
         return result
 
-    def iterable(self, n):
+    def iterator(self, n):
         self.i = 0
         length = len(self)
         users_list = list(self)
