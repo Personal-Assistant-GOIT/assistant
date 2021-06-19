@@ -94,7 +94,7 @@ class Birthday(Field):
             self.__value = date_birthday
 
         except:
-            print('Date is wrong')
+            # print('Date is wrong') - это пользователю видеть не надо. (появлялось в начале программы)
             self.__value = None
 
 
@@ -141,13 +141,14 @@ class Record():
         else:
             raise Exception("New birthday is not correct")
 
-
     def days_to_birthday(self):
         if self.birthday:
             now_date = datetime.now()
             birthday_date = datetime.strptime(self.birthday, '%d.%m.%Y')
-            delta1 = datetime(now_date.year, birthday_date.month, birthday_date.day)
-            delta2 = datetime(now_date.year + 1, birthday_date.month, birthday_date.day)
+            delta1 = datetime(
+                now_date.year, birthday_date.month, birthday_date.day)
+            delta2 = datetime(now_date.year + 1,
+                              birthday_date.month, birthday_date.day)
             days = (max(delta1, delta2) - now_date).days + 1
             if days >= 365:
                 return days - 365
@@ -205,16 +206,16 @@ class AddressBook(UserDict):
         users_list = list(self)
         while self.i < length:
             result = []
-            next_iter = length if len(users_list[self.i:]) < int(n) else self.i + int(n)
+            next_iter = length if len(users_list[self.i:]) < int(
+                n) else self.i + int(n)
             for j in range(self.i, next_iter):
                 user = f'\n{users_list[j]}\n{self[users_list[j]]}\n'
                 result.append(user)
                 self.i += 1
             yield result
-            
+
     def __str__(self):
         return '\n'.join(list(self.data.items()))
-    '''
 
 
 if __name__ == "__main__":
