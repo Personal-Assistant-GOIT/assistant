@@ -5,7 +5,7 @@ import os.path
 from classes_project import AddressBook, Record, Name, Phone, Birthday
 
 
-file = 'data.bin'
+FILE = 'data.bin'
 
 
 # декоратор  - обработчик ошибок
@@ -72,7 +72,6 @@ def add_bd(data):
         # если записи с таким именем нет
         if name not in phone_book:
             # добавляем в phone_book  новую запись,
-            
 
             n = Name(name)
 
@@ -100,7 +99,7 @@ def change_ph(data):
     if len(data.split()) == 3:
         name, phone, new_phone = data.split()
         if name in phone_book:
-            #  здесь передаю в метод объекты 
+            #  здесь передаю в метод объекты
             phone_book[name].change_phone(Phone(phone), Phone(new_phone))
         else:
             raise Exception("User is not found")
@@ -150,7 +149,9 @@ def show_all(data):
     else:
         # если не задан параметр N  считаем N равным длине словаря
         N = len(phone_book.data)
-
+        # если в базе ничего нет - выводим смысловую фразу.
+    if not N:
+        return "base is empty"
     # вызывает метод итератор из AddressBook
     for el in phone_book.iterator(N):
         print(el)
@@ -158,6 +159,7 @@ def show_all(data):
 
     # выполнить требование, чтобы все принты были в main  не получаилось
     # поэтому в return  идет строка без смысла
+
     return 'it\'s all'
 
 
@@ -174,7 +176,7 @@ def find(data):
 @input_error
 def good_bye(data):
     # функция окончания работы и сохранения данных
-    with open(file, 'wb') as f:
+    with open(FILE, 'wb') as f:
         pickle.dump(phone_book, f)
     return "Good bye!"
 
@@ -208,8 +210,8 @@ if __name__ == '__main__':
     phone_book = AddressBook()
     # открываю файл данных, если он есть.
 
-    if os.path.isfile(file):
-        with open(file, 'rb') as f:
+    if os.path.isfile(FILE):
+        with open(FILE, 'rb') as f:
             phone_book = pickle.load(f)
     #  если его нет, то phone_book будет новым экземляром AddressBook
 
