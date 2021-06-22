@@ -1,8 +1,9 @@
 import pickle
 import sys
 import os.path
+from typing_extensions import NotRequired
 
-from classes_project import AddressBook, Record, Name, Phone, Birthday
+from classes_project import *
 
 
 FILE = 'data.bin'
@@ -92,6 +93,41 @@ def add_bd(data):
 
 
 @input_error
+def add_note(data):
+    # функция, которая добавляет заметку
+    # в data  должна  прийти строка, которая начинается с "add "
+    # и содержит еще два "слова"  - имя  и заметку
+    # "add nt " удаляется сразу
+    data = data.replace('add nt ', '')
+
+    #  действительно ли там есть два "слова" ?
+    if len(data.split()) == 2:
+        name, note = data.split()
+        nt = Note(note)
+
+        # если записи с таким именем нет
+        if name not in phone_book:
+            # добавляем в phone_book  новую запись,
+
+            n = Name(name)
+
+            rec = Record(name=n, note=nt)
+
+            phone_book.add_record(rec)
+
+        # если запись такая есть, но др пустое, то заполняем его
+        elif phone_book[name].note.value == None:
+            phone_book[name].change_note(note)
+
+        #  если запись такая уже есть
+        else:
+            raise Exception("Abonent already has a note")
+
+    else:
+        raise Exception("Give me name and note please")
+
+
+@input_error
 def change_ph(data):
     #   чтобы изменить телефон нужно получить три слова
     #   name, phone, new_phone
@@ -121,6 +157,22 @@ def change_bd(data):
             raise Exception("User is not found")
     else:
         raise Exception("Give me name and birthday, please")
+
+
+@input_error
+def change_nt(data):
+    #   изменить заметку нужно получить два слова
+    #   name, new_note
+    data = data.replace('change bd ', '')
+    if len(data.split()) == 2:
+        name,  new_note = data.split()
+        if name in phone_book:
+            new_note = Note(new_note)
+            phone_book[name].change_note(new_note)
+        else:
+            raise Exception("User is not found")
+    else:
+        raise Exception("Give me name and note, please")
 
 
 @input_error
@@ -185,8 +237,10 @@ ACTIONS = {
     'hello': hello,
     'add ph': add_ph,
     'add bd': add_bd,
+    'add nt': add_note,
     'change ph': change_ph,
     'change bd': change_bd,
+    'change bd': change_nt,
     'phone': phone,
     'show all': show_all,
     'find ': find,

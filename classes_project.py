@@ -28,6 +28,11 @@ class Name(Field):
     pass
 
 
+class Note(Field):
+
+    pass
+
+
 class Phone(Field):
 
     @property
@@ -100,10 +105,11 @@ class Birthday(Field):
 
 class Record():
 
-    def __init__(self, name, phone='', birthday=Birthday(None)):
+    def __init__(self, name, note=Note(None), phone='', birthday=Birthday(None)):
         self.name = name
         self.phones = [phone]
         self.birthday = birthday
+        self.note = note
 
     def __str__(self):
         result = ''
@@ -111,6 +117,7 @@ class Record():
         if self.birthday:
             result += f"birthday - {str(self.birthday.value)} "
         result += f"phones - {', '.join([phone.value for phone in self.phones])}"
+        result += f"notes - {self.note.valu}"
         return result
 
     def add_phone(self, phone):
@@ -141,6 +148,12 @@ class Record():
         else:
             raise Exception("New birthday is not correct")
 
+    def change_note(self,  new_note):
+        if new_note.value != None:
+            self.note = new_note
+        else:
+            raise Exception("New note is not correct")
+
     def days_to_birthday(self):
         if self.birthday:
             now_date = datetime.now()
@@ -154,6 +167,9 @@ class Record():
                 return days - 365
             else:
                 return days
+
+    def add_note(self, note):
+        self.note = note
 
 
 class AddressBook(UserDict):
