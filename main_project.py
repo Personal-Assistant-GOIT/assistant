@@ -88,7 +88,7 @@ def add_bd(data):
             raise Exception("Abonent already has a birthday")
 
     else:
-        raise Exception("Give me name and brthday please")
+        raise Exception("Give me name and birthday please")
 
 
 @input_error
