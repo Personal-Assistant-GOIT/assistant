@@ -16,7 +16,7 @@ node_modules
 build/
 *.psd
 __pycache__/
-myvenv/
+pavenv/
 clean_folder.egg-info/
 
 
