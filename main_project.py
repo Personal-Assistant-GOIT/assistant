@@ -2,10 +2,10 @@ import pickle
 import sys
 import os.path
 
-from classes_project import AddressBook, Record, Name, Phone, Birthday
+from classes_project import AddressBook, Email, Record, Name, Phone, Birthday
 
 
-FILE = 'data.bin'
+FILE = '.\data.bin'
 
 
 # декоратор  - обработчик ошибок
@@ -26,13 +26,45 @@ def hello(data):
 
 
 @input_error
+def add_email(data):
+    # функция, которая добавляет номер телефона по имени
+    # в data  должна  прийти строка, которая начинается с "add "
+    # и содержит еще два "слова"  - имя  и телефон
+    # "add email " удаляется сразу
+    data = data.replace('add email ', '')
+    #  проверяемдействительно ли там есть два "слова" ?
+    if len(data.split()) == 2:
+        name, email = data.split()
+
+        if name not in phone_book:
+            # добавляем в phone_book  новую запись,
+            # предварительно долго и нудно ее создаем
+
+            n = Name(name)
+            em = Email(email)
+            rec = Record(name=n, email=em)
+
+            phone_book.add_record(rec)
+            # какой прищепкой цеплять сюда день рождения?
+
+        else:
+            # если запись с таким именем уже есть, то добавляем юзеру еще один телефон
+            em = Email(email)
+            phone_book[name].email = em
+
+    else:
+        raise Exception("Give me name and phone please")
+
+
+
+@input_error
 def add_ph(data):
     # функция, которая добавляет номер телефона по имени
     # в data  должна  прийти строка, которая начинается с "add "
     # и содержит еще два "слова"  - имя  и телефон
     # "add ph " удаляется сразу
     data = data.replace('add ph ', '')
-    #  проверяемдействительно ли там есть два "слова" ?
+    #  проверяем действительно ли там есть два "слова" ?
     if len(data.split()) == 2:
         name, phone = data.split()
 
@@ -45,7 +77,7 @@ def add_ph(data):
             rec = Record(name=n, phone=ph)
 
             phone_book.add_record(rec)
-            # какой прищепкой цеплять сюда день рождения?
+            
 
         else:
             # если запись с таким именем уже есть, то добавляем юзеру еще один телефон
@@ -185,8 +217,12 @@ ACTIONS = {
     'hello': hello,
     'add ph': add_ph,
     'add bd': add_bd,
+    'add email': add_email,
+  
     'change ph': change_ph,
     'change bd': change_bd,
+    'change email': change_ph,
+ 
     'phone': phone,
     'show all': show_all,
     'find ': find,
@@ -219,11 +255,15 @@ if __name__ == '__main__':
         text = ''' You can:
         hello, good bye, close, exit, . - understandably
         add ph <name> <phone>
-        add bd <name> <birthday>
-        show all  <N>    - show all abonent, N - number abonents in page
+        add bd <name> <birthday> <YYYY.MM.DD>
+        add email <name> <email>
+        
+        show all  <N>    - show all abonent, N - number abonents on page
         phone <name>  - show all phone this abonent
         change ph <name> <phone> <new_phone>
         change bd <name> <new_birthday>
+        change email <name> <e-mail> <new_e-mail>
+        
         find <str>    - seek all records where is finding <str>
         '''
         print(text)

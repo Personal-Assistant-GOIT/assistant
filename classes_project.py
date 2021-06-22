@@ -3,7 +3,7 @@ import datetime
 import re
 import copy
 
-pattern_phone = '\d{3,}'
+#pattern_phone = '\d{3,}'
 
 
 class Field:
@@ -25,7 +25,15 @@ class Field:
 
 class Name(Field):
 
-    pass
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, new_value):
+        self.__value = new_value
+        
+
 
 
 class Phone(Field):
@@ -37,11 +45,9 @@ class Phone(Field):
     @value.setter
     def value(self, new_value):
 
-        # проверка данных на корректность.
-        # паттерн  pattern_phone указан в начале программы
-        # if re.fullmatch(pattern_phone, new_value):
-        # нужна более продвинутая проверка!!!!!
-        # если количество цифр меньше шести телефон не записывается
+        # проверка данных на корректность. Строка из цифр
+        
+       
         new_value = re.sub(r'[^\d]', '', new_value)
         if len(new_value) > 6:
             self.__value = new_value
@@ -51,12 +57,32 @@ class Phone(Field):
             self.__value = None
 
 
+
+class Email(Field):
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, email):
+
+        # chack for email correctness
+       
+        regex = r'\b\w._%+-]+@[\w.-]+\.[a-zA-Z]{2,}\b'
+        raw_email = re.search(regex, email)
+        if raw_email != None:
+            email = raw_email.group()
+            self.__email = email
+        else:
+            print('This email is not correct')
+            self.__value = None
+
 class Birthday(Field):
 
-    def __init__(self, value):
-        self.value = value
-
     '''
+      def __init__(self, value):
+        self.value = value
     def __init__(self. value):
         self.__value = 0
         self.value = value
@@ -70,6 +96,7 @@ class Birthday(Field):
     def value(self, new_value):
         # предполагаю, что new_value  может быть записан с любыми разделителями
         # извлекаю оттуда только числа
+        print("\nDate format yyyy.mm.dd")
         numbers_date = re.findall(r'\d+', str(new_value))
 
         # если передали None , или там не три числа
@@ -100,10 +127,12 @@ class Birthday(Field):
 
 class Record():
 
-    def __init__(self, name, phone='', birthday=Birthday(None)):
+    def __init__(self, name=Name(None), phone=Phone(None), birthday=Birthday(None), email=Email(None)):
         self.name = name
         self.phones = [phone]
         self.birthday = birthday
+        self.email = email
+        
 
     def __str__(self):
         result = ''
@@ -111,6 +140,8 @@ class Record():
         if self.birthday:
             result += f"birthday - {str(self.birthday.value)} "
         result += f"phones - {', '.join([phone.value for phone in self.phones])}"
+        result += f"e-mail - {str(self.email.value)}"
+       
         return result
 
     def add_phone(self, phone):
@@ -178,6 +209,8 @@ class AddressBook(UserDict):
         name - объект класса Name
         phones -   список объектов класса Phone
         birthday - объект класса  Birthday
+        email - объект класса  Email
+        
         '''
         self[record.name.value] = record
 
