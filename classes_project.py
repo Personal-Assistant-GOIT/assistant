@@ -105,7 +105,7 @@ class Birthday(Field):
 
 class Record():
 
-    def __init__(self, name, note=Note(None), phone='', birthday=Birthday(None)):
+    def __init__(self, name, phone='', birthday=Birthday(None), note=Note(None)):
         self.name = name
         self.phones = [phone]
         self.birthday = birthday
@@ -116,8 +116,9 @@ class Record():
         result += f"name - {self.name.value} "
         if self.birthday:
             result += f"birthday - {str(self.birthday.value)} "
-        result += f"phones - {', '.join([phone.value for phone in self.phones])}"
-        result += f"notes - {self.note.valu}"
+        result += f"phones - {', '.join([phone.value for phone in self.phones])} "
+        if self.note:
+            result += f"notes - {self.note.value}"
         return result
 
     def add_phone(self, phone):
@@ -168,8 +169,8 @@ class Record():
             else:
                 return days
 
-    def add_note(self, note):
-        self.note = note
+    # def add_note(self, note):
+    #     self.note = note
 
 
 class AddressBook(UserDict):
@@ -213,9 +214,26 @@ class AddressBook(UserDict):
                 for phone in rec.phones:
                     if dig_user_or_phone in phone.value:
                         result += '\n' + str(rec)
-
         return result
 
+    def iterrator(self, n="max"):
+        br = 0  # for break for
+        y = []
+        if n == "max":
+            n = len(self)
+        if n > len(self):
+            n = len(self)
+        for key in self.keys():
+            if br < n:
+                y.append(str(self.get(key)))
+                br += 1
+            else:
+                break
+        for record in y:
+            print(record)
+        y.clear()
+
+    # below code don't work don't try understand that //
     def iterator(self, n):
         self.i = 0
         length = len(self)

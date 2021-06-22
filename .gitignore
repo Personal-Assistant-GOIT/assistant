@@ -8,16 +8,19 @@ lerna-debug.log*
 
 
 __pycache__/
-.vscode
-.idea
-.DS_Store
+*.vscode
+*.idea
+*.DS_Store
 node_modules
-.env
+*.env
 build/
 *.psd
 __pycache__/
 pavenv/
 clean_folder.egg-info/
+*.bin
+*.json
+
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
