@@ -269,6 +269,7 @@ ACTIONS = {
     'phone': phone,
     'note': note,
     'show all': show_all,
+    'sh': show_all,
     'find ': find,
     'good bye': good_bye,
     'close': good_bye,
