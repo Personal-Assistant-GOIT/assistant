@@ -1,6 +1,8 @@
 # assistant
 Personal assistant allows
+
 You can:
+
         hello, good bye, close, exit, . - understandably
         
         add ph <name> <phone>
