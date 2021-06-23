@@ -289,16 +289,15 @@ def choice_action(data):
 TEXT = ''' You can:
     hello, good bye, close, exit, . - understandably
     add ph <name> <phone>
-    add bd <name> <birthday>
+    add bd <name> <birthday> - use format YYYY.MM.DD
     add nt <name> <note>
-    show all  <N>    - show all abonent, N - number abonents in page
-    phone <name>  - show all phone this abonent
-    note <name>  - show all note this abonent
+    show all  <N>    - show all abonents, N - number of abonents on page
+    phone <name>  - show all phonesof theabonent
     change ph <name> <phone> <new_phone>
     change bd <name> <new_birthday>
     change nt <name> <new_note>
     find <str>    - seek all records where is finding <str>
-    help_me - to see this lists of commands
+    help_me - show the list of available commands
     '''
 
 
