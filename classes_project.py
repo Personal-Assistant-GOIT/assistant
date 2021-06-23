@@ -28,6 +28,11 @@ class Name(Field):
     pass
 
 
+class Note(Field):
+
+    pass
+
+
 class Phone(Field):
 
     @property
@@ -100,17 +105,20 @@ class Birthday(Field):
 
 class Record():
 
-    def __init__(self, name, phone='', birthday=Birthday(None)):
+    def __init__(self, name, phone='', birthday=Birthday(None), note=Note(None)):
         self.name = name
         self.phones = [phone]
         self.birthday = birthday
+        self.note = note
 
     def __str__(self):
         result = ''
         result += f"name - {self.name.value} "
         if self.birthday:
             result += f"birthday - {str(self.birthday.value)} "
-        result += f"phones - {', '.join([phone.value for phone in self.phones])}"
+        result += f"phones - {', '.join([phone.value for phone in self.phones])} "
+        if self.note:
+            result += f"notes - {self.note.value}"
         return result
 
     def add_phone(self, phone):
@@ -141,6 +149,12 @@ class Record():
         else:
             raise Exception("New birthday is not correct")
 
+    def change_note(self,  new_note):
+        if new_note.value != None:
+            self.note = new_note
+        else:
+            raise Exception("New note is not correct")
+
     def days_to_birthday(self):
         if self.birthday:
             now_date = datetime.now()
@@ -154,6 +168,9 @@ class Record():
                 return days - 365
             else:
                 return days
+
+    # def add_note(self, note):
+    #     self.note = note
 
 
 class AddressBook(UserDict):
@@ -197,9 +214,26 @@ class AddressBook(UserDict):
                 for phone in rec.phones:
                     if dig_user_or_phone in phone.value:
                         result += '\n' + str(rec)
-
         return result
 
+    def iterrator(self, n="max"):
+        br = 0  # for break for
+        y = []
+        if n == "max":
+            n = len(self)
+        if n > len(self):
+            n = len(self)
+        for key in self.keys():
+            if br < n:
+                y.append(str(self.get(key)))
+                br += 1
+            else:
+                break
+        for record in y:
+            print(record)
+        y.clear()
+
+    # below code don't work don't try understand that //
     def iterator(self, n):
         self.i = 0
         length = len(self)
